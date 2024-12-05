@@ -1,2 +1,2 @@
 r:
-	python3 main.py /mnt/d/grapper/taihou/
+	python3 main.py $(path)

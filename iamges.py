@@ -9,7 +9,9 @@ class Iamges:
         images = Path(path).glob("*.*")
         image_extensions = {".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tiff"}
         return [
-            (img, img.name) for img in images if img.is_file() and img.suffix.lower() in image_extensions
+            (img, img.name)
+            for img in images
+            if img.is_file() and img.suffix.lower() in image_extensions
         ]
 
     @staticmethod
@@ -18,13 +20,8 @@ class Iamges:
     ) -> list[tuple[Path, str]]:
         Image.MAX_IMAGE_PIXELS = None
 
+        # sometimes images that are a square are put in the wrong places... no idea what i need to change...
         category_config = {
-            DirCategory.GoodQuality_Square: {
-                "min_w": 1000,
-                "min_h": 1000,
-                "min_ratio": 1,
-                "max_ratio": 1,
-            },
             DirCategory.GoodQuality_Landscape: {
                 "min_w": 1920,
                 "min_h": 1080,
@@ -35,12 +32,6 @@ class Iamges:
                 "min_w": 1080,
                 "min_h": 1920,
                 "min_ratio": float("-inf"),
-                "max_ratio": 1,
-            },
-            DirCategory.BadQuality_Square: {
-                "min_w": 0,
-                "min_h": 0,
-                "min_ratio": 1,
                 "max_ratio": 1,
             },
             DirCategory.BadQuality_Landscape: {
@@ -92,7 +83,7 @@ class Iamges:
                     if questionmark3:
                         color = "\033[32mValid\033[0m"
                     else:
-                        color = "\033[31minvalid\033[0m"
+                        color = "\t\033[31minvalid\033[0m"
 
                     print(
                         f"wh|r{width}, {height} | {ratio} |\
