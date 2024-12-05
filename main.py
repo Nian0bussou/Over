@@ -15,7 +15,7 @@ def main():
 
     imgs = Iamges.get_list(path)
 
-    while len(imgs) > 0:
+    while len(imgs) > 0: # makes sure no images are left behind
         imgs = Iamges.get_list(path)
         for dcat in DirCategory:
             filtered_imgs = Iamges.filtered_images(imgs, dcat)
