@@ -94,7 +94,7 @@ class Iamges:
                                 \n\t\t\t\t{color}"
                     )
 
-                    return cond1 and cond2 and cond3
+                    return questionmark3
             except Exception as e:
                 print(f"Error occurred while processing image {image_path}: {e}")
 

@@ -7,10 +7,8 @@ from Evn import DirCategory
 cat_to_path = {
     DirCategory.GoodQuality_Landscape: "good_landscape",
     DirCategory.GoodQuality_Portrait: "good_portrait",
-    DirCategory.GoodQuality_Square: "good_square",
     DirCategory.BadQuality_Landscape: "bad_landscape",
     DirCategory.BadQuality_Portrait: "bad_portrait",
-    DirCategory.BadQuality_Square: "bad_square",
 }
 
 
