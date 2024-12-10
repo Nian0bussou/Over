@@ -6,6 +6,10 @@ from Evn import DirCategory
 class Iamges:
     @staticmethod
     def get_list(path) -> list[tuple[Path, str]]:
+        """
+        tuple[Path, str] represents:
+            tuple[the path of the file, filename]
+        """
         images = Path(path).glob("*.*")
         image_extensions = {".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tiff"}
         return [
@@ -18,6 +22,9 @@ class Iamges:
     def filtered_images(
         image_list: list[tuple[Path, str]], category: DirCategory
     ) -> list[tuple[Path, str]]:
+        """
+        filter the a list of images (gotten from `get_list`) by the `DirCategory`
+        """
         Image.MAX_IMAGE_PIXELS = None
 
         # sometimes images that are a square are put in the wrong places... no idea what i need to change...
