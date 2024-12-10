@@ -21,7 +21,7 @@ class Iamges:
         Image.MAX_IMAGE_PIXELS = None
 
         # sometimes images that are a square are put in the wrong places... no idea what i need to change...
-        category_config = {
+        category_config  = {
             DirCategory.GoodQuality_Landscape: {
                 "min_w": 1920,
                 "min_h": 1080,
