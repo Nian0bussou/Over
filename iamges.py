@@ -2,7 +2,6 @@ from pathlib import Path
 from PIL import Image
 from Evn import DirCategory
 
-
 class Iamges:
     @staticmethod
     def get_list(path) -> list[tuple[Path, str]]:
