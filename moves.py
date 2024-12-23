@@ -9,6 +9,7 @@ cat_to_path = {
     DirCategory.GoodQuality_Portrait: "good_portrait",
     DirCategory.BadQuality_Landscape: "bad_landscape",
     DirCategory.BadQuality_Portrait: "bad_portrait",
+    DirCategory.Video: "video",
 }
 
 
