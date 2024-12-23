@@ -53,9 +53,21 @@ class Iamges:
                 "min_ratio": float("-inf"),
                 "max_ratio": 1,
             },
+            DirCategory.Video: {
+                "min_w": 0,
+                "min_h": 0,
+                "min_ratio": float("-inf"),
+                "max_ratio": float("inf"),
+            },
         }
 
-        # Get the configuration for the specified category
+        # not tested yet / return the list of video skipping image checkings
+        if category == DirCategory.Video:
+            return [
+                (image_path, img_name)
+                for image_path, img_name in image_list
+            ]
+
         config = category_config[category]
         min_w, min_h = config["min_w"], config["min_h"]
         min_ratio, max_ratio = config["min_ratio"], config["max_ratio"]
@@ -63,7 +75,7 @@ class Iamges:
         return [
             (image_path, img_name)
             for image_path, img_name in image_list
-            if Iamges._is_image_valid(image_path, min_w, min_h, min_ratio, max_ratio)
+            if Iamges._is_image_valid(image_path, min_w, min_h, min_ratio, max_ratio )
         ]
 
     @staticmethod

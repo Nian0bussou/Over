@@ -6,3 +6,4 @@ class DirCategory(Enum):
     GoodQuality_Portrait = 2
     BadQuality_Landscape = 3
     BadQuality_Portrait = 4
+    Video = 4
