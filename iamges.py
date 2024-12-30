@@ -2,15 +2,50 @@ from pathlib import Path
 from PIL import Image
 from Evn import DirCategory
 
+# sometimes images that are a square are put in the wrong places... no idea what i need to change...
+category_config  = {
+    DirCategory.GoodQuality_Landscape: {
+        "min_w": 1920,
+        "min_h": 1080,
+        "min_ratio": 1,
+        "max_ratio": float("inf"),
+    },
+    DirCategory.GoodQuality_Portrait: {
+        "min_w": 1080,
+        "min_h": 1920,
+        "min_ratio": float("-inf"),
+        "max_ratio": 1,
+    },
+    DirCategory.BadQuality_Landscape: {
+        "min_w": 0,
+        "min_h": 0,
+        "min_ratio": 1,
+        "max_ratio": float("inf"),
+    },
+    DirCategory.BadQuality_Portrait: {
+        "min_w": 0,
+        "min_h": 0,
+        "min_ratio": float("-inf"),
+        "max_ratio": 1,
+    },
+    DirCategory.Video: {
+        "min_w": 0,
+        "min_h": 0,
+        "min_ratio": float("-inf"),
+        "max_ratio": float("inf"),
+    },
+}
+
 class Iamges:
     @staticmethod
     def get_list(path) -> list[tuple[Path, str]]:
         """
-        tuple[Path, str] represents:
-            tuple[the path of the file, filename]
+        `tuple[Path, str]` represents:
+            `tuple[the path of the file, filename]`
         """
         images = Path(path).glob("*.*")
-        image_extensions = {".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tiff"}
+        image_extensions = {".png", ".jpg", ".jpeg", ".bmp", ".tiff", ".mp4", ".gif"}
+
         return [
             (img, img.name)
             for img in images
@@ -26,66 +61,41 @@ class Iamges:
         """
         Image.MAX_IMAGE_PIXELS = None
 
-        # sometimes images that are a square are put in the wrong places... no idea what i need to change...
-        category_config  = {
-            DirCategory.GoodQuality_Landscape: {
-                "min_w": 1920,
-                "min_h": 1080,
-                "min_ratio": 1,
-                "max_ratio": float("inf"),
-            },
-            DirCategory.GoodQuality_Portrait: {
-                "min_w": 1080,
-                "min_h": 1920,
-                "min_ratio": float("-inf"),
-                "max_ratio": 1,
-            },
-            DirCategory.BadQuality_Landscape: {
-                "min_w": 0,
-                "min_h": 0,
-                "min_ratio": 1,
-                "max_ratio": float("inf"),
-            },
-            DirCategory.BadQuality_Portrait: {
-                "min_w": 0,
-                "min_h": 0,
-                "min_ratio": float("-inf"),
-                "max_ratio": 1,
-            },
-            DirCategory.Video: {
-                "min_w": 0,
-                "min_h": 0,
-                "min_ratio": float("-inf"),
-                "max_ratio": float("inf"),
-            },
-        }
-
-        # not tested yet / return the list of video skipping image checkings
         if category == DirCategory.Video:
             return [
                 (image_path, img_name)
                 for image_path, img_name in image_list
+                if Iamges.is_video(image_path)
             ]
 
-        config = category_config[category]
-        min_w, min_h = config["min_w"], config["min_h"]
-        min_ratio, max_ratio = config["min_ratio"], config["max_ratio"]
+
+        # not tested yet / return the list of video skipping image checkings
 
         return [
             (image_path, img_name)
             for image_path, img_name in image_list
-            if Iamges._is_image_valid(image_path, min_w, min_h, min_ratio, max_ratio )
+            if Iamges.is_image_valid(image_path, category)
         ]
 
     @staticmethod
-    def _is_image_valid(
+    def is_video(image_path: Path) -> bool:
+        """
+        returns if `image_path` has filetype `.mp4` or `.gif`
+        """
+        return image_path.is_file() and image_path.suffix.lower() in [".mp4", ".gif"]
+
+    @staticmethod
+    def is_image_valid(
         image_path: Path,
-        min_w: int,
-        min_h: int,
-        min_ratio: float,
-        max_ratio: float,
+        cat: DirCategory,
     ) -> bool:
+        config = category_config[cat]
+        min_w, min_h = config["min_w"], config["min_h"]
+        min_ratio, max_ratio = config["min_ratio"], config["max_ratio"]
+
         if image_path.is_file():
+            if image_path.suffix.lower() in [".mp4", ".gif"]:
+                return False
             try:
                 with Image.open(image_path) as img:
                     width, height = img.size
@@ -104,7 +114,8 @@ class Iamges:
                         color = "\t\033[31minvalid\033[0m"
 
                     print(
-                        f"wh|r{width}, {height} | {ratio} |\
+                        f"wh|r\t{width}, \t{height} \t| {ratio} |\
+                                \n\t{cat}: \
                                 \n\tValid: \
                                 \n\t\t{cond1},\
                                 \n\t\t{cond2},\
